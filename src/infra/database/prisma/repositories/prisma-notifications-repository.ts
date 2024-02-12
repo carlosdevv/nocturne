@@ -1,4 +1,3 @@
-import { Content } from '@application/entities/notification/content';
 import { Notification } from '@application/entities/notification/notification';
 import { NotificationsRepository } from '@application/repositories/notifications-repository';
 import { Injectable } from '@nestjs/common';
@@ -18,16 +17,27 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
 
     if (!notification) return null;
 
-    const notificationEntity = new Notification({
-      category: notification.category,
-      content: new Content(notification.content),
-      createdAt: notification.createdAt,
-      recipientId: notification.recipientId,
-      canceledAt: notification.canceledAt,
-      readAt: notification.readAt,
+    return PrismaNotificationMapper.toDomain(notification);
+  }
+
+  async findManyByRecipientId(recipientId: string): Promise<Notification[]> {
+    const notifications = await this.prismaService.notification.findMany({
+      where: {
+        recipientId,
+      },
     });
 
-    return notificationEntity;
+    return notifications.map(PrismaNotificationMapper.toDomain);
+  }
+
+  async countManyByRecipientId(recipientId: string): Promise<number> {
+    const count = await this.prismaService.notification.count({
+      where: {
+        recipientId,
+      },
+    });
+
+    return count;
   }
 
   async create(notification: Notification): Promise<void> {
@@ -41,7 +51,10 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
   async save(notification: Notification): Promise<void> {
     const notificationMapper = PrismaNotificationMapper.toPrisma(notification);
 
-    await this.prismaService.notification.create({
+    await this.prismaService.notification.update({
+      where: {
+        id: notificationMapper.id,
+      },
       data: notificationMapper,
     });
   }

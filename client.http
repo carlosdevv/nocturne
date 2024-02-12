@@ -2,7 +2,27 @@ POST http://localhost:3000/notifications
 content-Type: application/json
 
 {
-    "recipientId": "5f5e3e3e3e3e3e3e3e3e3e3e",
+    "recipientId": "recipientId",
     "content": "New Notification",
     "category": "category"
 }
+
+###
+
+PATCH http://localhost:3000/notifications/09a25e30-83cd-41aa-b5db-93dd2da79b67/cancel
+
+###
+
+PATCH http://localhost:3000/notifications/09a25e30-83cd-41aa-b5db-93dd2da79b67/read
+
+###
+
+PATCH http://localhost:3000/notifications/09a25e30-83cd-41aa-b5db-93dd2da79b67/unread
+
+###
+
+GET http://localhost:3000/notifications/count/from/recipientId
+
+###
+
+GET http://localhost:3000/notifications/from/recipientId
