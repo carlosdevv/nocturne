@@ -1,13 +1,8 @@
-import { Content } from './content';
-import { Notification } from './notification';
+import { makeNotification } from '@test/factories/notification-factory';
 
 describe('Notification', () => {
   it('should be able to create a notification', () => {
-    const notification = new Notification({
-      content: new Content('New content'),
-      category: 'category',
-      recipientId: 'recipientId',
-    });
+    const notification = makeNotification();
 
     expect(notification).toBeTruthy();
   });
