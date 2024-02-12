@@ -1,0 +1,7 @@
+POST 
+https://localhost:3000/notifications
+Content-Type: application/json
+
+{
+    "title": "New Notification",
+}
